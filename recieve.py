@@ -28,4 +28,4 @@ while True:
     elif input == "B":
         wait_for_button(button_b, "B")
     elif input == "C":
-        shake1("SHAKE!", "shake()")
+        shake1("SHAKE!", "shake")
