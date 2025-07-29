@@ -1,25 +1,41 @@
 from microbit import *
 import radio
-
+import music
 radio.config(group=88)
 radio.on()
 
-def shake1(Label, gesture):
-    display.scroll(Label, delay=125)
+def logo (label):
     start = running_time()
-    while running_time() - start < 5000:
+    display.scroll(label, delay=75)
+    while running_time() - start < 3000:
+        if pin_logo.is_touched():
+            radio.send("+1 Score")
+            display.scroll("Correct!", delay=75)
+    music.play(music.WAWAWAWAA)
+    display.scroll("Wrong")
+    
+def shake1(Label, gesture):
+    start = running_time()
+    display.scroll(Label, delay=75)
+    while running_time() - start < 3000:
      if accelerometer.was_gesture(gesture):
-         display.scroll("Correct", delay=125)
+         radio.send("+1 Score")
+         display.scroll("Correct!", delay=75)
+    
+     music.play(music.WAWAWAWAA)
+    display.scroll("Wrong")
     
 def wait_for_button(button, label):
-    display.show(label)
-    start = running_time()
     
-    while running_time() - start < 5000:
+    start = running_time()
+    display.show(label)
+    while running_time() - start < 3000:
         if button.is_pressed():
-            display.scroll("Correct!", delay=125)
+            radio.send("+1 Score")
+            display.scroll("Correct!", delay=75)
             return
-    display.scroll("Wrong", delay=125)
+    music.play(music.WAWAWAWAA)
+    display.scroll("Wrong", delay=75)
 
 while True:
     input = radio.receive()
@@ -29,3 +45,5 @@ while True:
         wait_for_button(button_b, "B")
     elif input == "C":
         shake1("SHAKE!", "shake")
+    elif input == "D":
+        logo("Logo!")
